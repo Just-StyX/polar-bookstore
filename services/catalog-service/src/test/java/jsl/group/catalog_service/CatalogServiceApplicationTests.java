@@ -5,14 +5,16 @@ import jsl.group.catalog_service.domain.ResponseMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.cloud.config.enabled=false"})
-class CatalogServiceApplicationTests extends PostgresBaseTest {
+class CatalogServiceApplicationTests {
 	@Autowired
 	private WebTestClient webTestClient;
 	@Test
@@ -25,14 +27,14 @@ class CatalogServiceApplicationTests extends PostgresBaseTest {
 		webTestClient.post()
 				.uri("/books")
 				.bodyValue(book)
-				.exchange();
-//				.expectStatus().isCreated()
-//				.expectBody(ResponseMessage.class).value(actual -> {
-//					assertThat(actual.body()).isNotNull();
-//					assertThat(actual.exception()).isFalse();
-//					assertThat(actual.url()).isNotNull();
-//					assertThat(actual.version()).isEqualTo("api-v1");
-//				});
+				.exchange()
+				.expectStatus().isCreated()
+				.expectBody(ResponseMessage.class).value(actual -> {
+					assertThat(actual.body()).isNotNull();
+					assertThat(actual.exception()).isFalse();
+					assertThat(actual.url()).isNotNull();
+					assertThat(actual.version()).isEqualTo("api-v1");
+				});
 	}
 
 }
