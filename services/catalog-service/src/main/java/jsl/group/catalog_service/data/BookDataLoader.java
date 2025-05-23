@@ -21,8 +21,8 @@ public class BookDataLoader {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadBookTestData() {
-        Book bookOne = Book.of("ISBN-10 0-596-52068-9", "Title-one", "Author one", BigDecimal.valueOf(9.90));
-        Book bookTwo = Book.of("ISBN-10 0-596-52068-8", "Title-two", "Author two", BigDecimal.valueOf(9.90));
+        Book bookOne = Book.of("ISBN-10 0-596-52068-9", "Title-one", "Author one", BigDecimal.valueOf(9.90), "Springer");
+        Book bookTwo = Book.of("ISBN-10 0-596-52068-8", "Title-two", "Author two", BigDecimal.valueOf(9.90), "Springer");
         bookRepository.deleteAll();
         bookRepository.saveAll(List.of(bookOne, bookTwo));
     }

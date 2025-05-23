@@ -30,13 +30,14 @@ public record Book(
         @NotNull(message = "What is the price of the book? Please provide")
         @Positive(message = "The price must be greater than zero(0)")
         BigDecimal price,
+        String publisher,
 
         @CreatedDate
         Instant createdDate,
         @LastModifiedDate
         Instant lastModifiedDate
 ) {
-        public static Book of(String isbn, String title, String author, BigDecimal price) {
-                return new Book(null, 0, isbn, title, author, price, null, null);
+        public static Book of(String isbn, String title, String author, BigDecimal price, String publisher) {
+                return new Book(null, 0, isbn, title, author, price, publisher, null, null);
         }
 }

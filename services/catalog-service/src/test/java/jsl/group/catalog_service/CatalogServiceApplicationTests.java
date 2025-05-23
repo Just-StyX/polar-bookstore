@@ -23,7 +23,7 @@ class CatalogServiceApplicationTests {
 
 	@Test
 	void postRequestToCreateBook() {
-		Book book = Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90));
+		Book book = Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90), "Springer");
 		webTestClient.post()
 				.uri("/books")
 				.bodyValue(book)
