@@ -1,1 +1,2 @@
 include ':services:catalog-service'
+include ':cloud-services:configuration-service'

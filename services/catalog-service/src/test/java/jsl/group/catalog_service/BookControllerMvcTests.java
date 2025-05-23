@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookController.class)
+@WebMvcTest(value = BookController.class, properties = {"spring.cloud.config.enabled=false"})
 @EnableConfigurationProperties(value = PolarConfigurationProperties.class)
 public class BookControllerMvcTests {
     @Autowired

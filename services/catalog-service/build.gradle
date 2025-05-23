@@ -28,6 +28,10 @@ configurations {
 	}
 }
 
+ext {
+	set('springCloudVersion', "2024.0.1")
+}
+
 bootRun {
 	systemProperty 'spring.profiles.active', 'test-data'
 }
@@ -41,6 +45,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.retry:spring-retry'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 tasks.named('test') {

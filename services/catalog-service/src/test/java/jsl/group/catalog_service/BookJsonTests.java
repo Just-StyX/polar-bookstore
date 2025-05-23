@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JsonTest
+@JsonTest(properties = {"spring.cloud.config.enabled=false"})
 public class BookJsonTests {
     @Autowired
     private JacksonTester<Book> bookJacksonTester;
