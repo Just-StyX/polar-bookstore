@@ -1,11 +1,12 @@
 services:
   configuration-service:
     container_name: configuration-service
-    image: agenda/configuration-service
-    build:
-      context: cloud-services/configuration-service
-      dockerfile: Dockerfile
-    mem_limit: 512m
+    image: configuration-service
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - SPRING_PROFILE_ACTIVE=test-data
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8001
     ports:
       - "8888:8888"
     networks:
@@ -13,17 +14,21 @@ services:
 
   catalog-service:
     container_name: catalog-service
-    image: agenda/catalog-service
-    build:
-      context: services/catalog-service
-      dockerfile: Dockerfile
-    mem_limit: 512m
+    image: catalog-service
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/polar-bookstore
+      - SPRING_PROFILES_ACTIVE=test-data
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8001
     ports:
+      - "8001:8001"
       - "9001:9001"
     networks:
       - agenda
     depends_on:
       - configuration-service
+      - postgres
 
   postgres:
     container_name: postgres

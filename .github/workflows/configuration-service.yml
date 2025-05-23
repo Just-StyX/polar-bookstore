@@ -3,7 +3,7 @@ on: push
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: just-styx/catalog-service
+  IMAGE_NAME: just-styx/configuration-service
   VERSION: latest
 
 jobs:

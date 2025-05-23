@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-./gradlew build && docker compose build && docker compose up -d
+./gradlew bootBuildImage && docker compose up -d
