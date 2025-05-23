@@ -19,7 +19,7 @@ public class BookJsonTests {
 
     @Test
     void bookSerialize() throws IOException {
-        Book book = new Book("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90));
+        Book book = Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90));
         JsonContent<Book> jsonContent = bookJacksonTester.write(book);
         assertThat(jsonContent).extractingJsonPathStringValue("@.isbn").isEqualTo(book.isbn());
         assertThat(jsonContent).extractingJsonPathStringValue("@.title").isEqualTo(book.title());
@@ -38,6 +38,6 @@ public class BookJsonTests {
                 }
                 """;
         assertThat(bookJacksonTester.parse(content)).usingRecursiveComparison()
-                .isEqualTo(new Book("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.9)));
+                .isEqualTo(Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.9)));
     }
 }

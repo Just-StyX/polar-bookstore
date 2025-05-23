@@ -1,0 +1,50 @@
+services:
+  configuration-service:
+    container_name: configuration-service
+    image: agenda/configuration-service
+    build:
+      context: cloud-services/configuration-service
+      dockerfile: Dockerfile
+    mem_limit: 512m
+    ports:
+      - "8888:8888"
+    networks:
+      - agenda
+
+  catalog-service:
+    container_name: catalog-service
+    image: agenda/catalog-service
+    build:
+      context: services/catalog-service
+      dockerfile: Dockerfile
+    mem_limit: 512m
+    ports:
+      - "9001:9001"
+    networks:
+      - agenda
+    depends_on:
+      - configuration-service
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: polar-bookstore
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - agenda
+    restart: unless-stopped
+
+networks:
+  agenda:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
