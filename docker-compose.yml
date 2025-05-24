@@ -17,7 +17,7 @@ services:
     image: catalog-service
     environment:
       - BPL_JVM_THREAD_COUNT=50
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/polar-bookstore
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/polar_bookstore
       - SPRING_PROFILES_ACTIVE=test-data
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
@@ -31,16 +31,33 @@ services:
       - configuration-service
       - postgres
 
+  order-service:
+    container_name: order-service
+    image: order-service
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - SPRING_DATASOURCE_URL=r2dbc:postgresql://postgres:5432/polar_orders
+      - SPRING_PROFILES_ACTIVE=test-data
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8002
+      - SPRING_CLOUD_CONFIG_URI=http://configuration-service:8888
+    ports:
+      - "8002:8002"
+      - "9002:9002"
+    networks:
+      - agenda
+    depends_on:
+      - configuration-service
+      - postgres
+
   postgres:
     container_name: postgres
     image: postgres
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-      PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: polar-bookstore
     volumes:
-      - postgres:/data/postgres
+      - ./postgres-init/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     networks:
@@ -50,7 +67,3 @@ services:
 networks:
   agenda:
     driver: bridge
-
-volumes:
-  postgres:
-    driver: local

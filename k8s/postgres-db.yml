@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    db: postgres
+data:
+  init.sql: |
+    CREATE DATABASE polar_bookstore;
+    CREATE DATABASE polar_orders;
+
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -21,8 +33,6 @@ spec:
               value: username
             - name: POSTGRES_PASSWORD
               value: password
-            - name: POSTGRES_DB
-              value: polar-bookstore
           resources:
             requests:
               cpu: 100m
@@ -30,6 +40,13 @@ spec:
             limits:
               cpu: 200m
               memory: 120Mi
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-config-volume
+      volumes:
+        - name: postgres-config-volume
+          configMap:
+            name: postgres-config
 
 ---
 apiVersion: v1
