@@ -1,6 +1,7 @@
 spring:
   application:
     name: catalog-service
+  lifecycle.timeout-per-shutdown-phase: 15s
   config.import: "optional:configserver:"
   cloud.config:
     uri: "http://configuration-service:8888"
@@ -15,6 +16,3 @@ spring:
 
 app:
   version: "api-v1"
-
-management:
-  endpoints.web.exposure.include: refresh

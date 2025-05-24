@@ -4,7 +4,6 @@ services:
     image: configuration-service
     environment:
       - BPL_JVM_THREAD_COUNT=50
-      - SPRING_PROFILE_ACTIVE=test-data
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=9888
     ports:
