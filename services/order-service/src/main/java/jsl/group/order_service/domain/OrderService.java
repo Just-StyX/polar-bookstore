@@ -3,7 +3,6 @@ package jsl.group.order_service.domain;
 import jsl.group.order_service.book.Book;
 import jsl.group.order_service.book.BookClient;
 import jsl.group.order_service.config.OrderConfigurationProperties;
-import jsl.group.order_service.exception.ClientBookNotFoundException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,11 +38,11 @@ public class OrderService {
                 ));
     }
 
-    private static Order buildRejectedOrder(String bookIsbn, int quantity) {
+    public static Order buildRejectedOrder(String bookIsbn, int quantity) {
         return Order.of(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
     }
 
-    private static Order buildAcceptedOrder(Book book, int quantity) {
+    public static Order buildAcceptedOrder(Book book, int quantity) {
         return Order.of(book.isbn(), book.title() + " - " + book.author(), book.price(), quantity, OrderStatus.ACCEPTED);
     }
 }
