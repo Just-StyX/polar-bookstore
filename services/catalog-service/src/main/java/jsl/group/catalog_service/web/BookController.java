@@ -1,5 +1,7 @@
 package jsl.group.catalog_service.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jsl.group.catalog_service.config.PolarConfigurationProperties;
 import jsl.group.catalog_service.domain.Book;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("books")
+@SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Catalog Service API", description = "The catalog API generated with OpenApi")
 public class BookController {
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;

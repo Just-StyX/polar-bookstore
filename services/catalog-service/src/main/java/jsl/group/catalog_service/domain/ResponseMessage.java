@@ -1,7 +1,5 @@
 package jsl.group.catalog_service.domain;
 
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
 public record ResponseMessage<T> (
