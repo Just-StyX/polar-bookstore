@@ -27,4 +27,13 @@ public class OrderControllerAdvice {
                 null, HttpStatus.BAD_REQUEST.value(), null, null, LocalDateTime.now(), errors, true
         );
     }
+
+    @ExceptionHandler(ClientBookNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ResponseMessage<String> bookNotFoundHandler(ClientBookNotFoundException ex) {
+        return new ResponseMessage<>(
+                null, HttpStatus.NOT_FOUND.value(), null, null, LocalDateTime.now(), ex.getMessage(),true
+        );
+    }
+
 }
