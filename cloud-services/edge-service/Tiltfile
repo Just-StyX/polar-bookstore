@@ -13,4 +13,4 @@ custom_build(
 k8s_yaml(['../../k8s/edge-service-deployment.yml', '../../k8s/edge-service-service.yml'])
 
 # Manage
-k8s_resource('edge-service', port_forwards=['9000'])
+k8s_resource('edge-service')
