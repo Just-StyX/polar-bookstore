@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: edge-redis
+  labels:
+    db: edge-redis
+spec:
+  selector:
+    matchLabels:
+      db: edge-redis
+  template:
+    metadata:
+      labels:
+        db: edge-redis
+    spec:
+      containers:
+        - name: edge-redis
+          image: redis
+          resources:
+            requests:
+              cpu: 100m
+              memory: 50Mi
+            limits:
+              cpu: 200m
+              memory: 100Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-redis
+  labels:
+    db: edge-redis
+spec:
+  type: ClusterIP
+  selector:
+    db: edge-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

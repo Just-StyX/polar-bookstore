@@ -12,6 +12,26 @@ services:
     networks:
       - agenda
 
+  edge-service:
+    container_name: edge-service
+    image: edge-service
+    environment:
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8000
+      - SPRING_CLOUD_CONFIG_URI=http://configuration-service:8888
+      - CATALOG_SERVICE_URL=http://catalog-service:9001
+      - ORDER_SERVICE_URL=http://order-service:9002
+      - SPRING_REDIS_HOST=edge-redis
+      - SPRING_REDIS_PASSWORD=password
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    networks:
+      - agenda
+    depends_on:
+      - edge-redis
+      - configuration-service
+
   catalog-service:
     container_name: catalog-service
     image: catalog-service
@@ -63,6 +83,14 @@ services:
     networks:
       - agenda
     restart: unless-stopped
+
+  edge-redis:
+    image: redis
+    container_name: edge-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - agenda
 
 networks:
   agenda:
