@@ -13,3 +13,9 @@ spring:
       initial-interval: 1000
       max-interval: 2000
       multiplier: 1.1
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: username
+    password: password
+    connection-timeout: 5s
