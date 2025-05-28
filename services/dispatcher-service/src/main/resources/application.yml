@@ -23,12 +23,6 @@ spring:
           group: ${spring.application.name}
         packlabel-out-0:
           destination: order-dispatched
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: username
-    password: password
-    connection-timeout: 5s
 
 app:
   version: "api-v1"

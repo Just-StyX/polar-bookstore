@@ -5,7 +5,7 @@ metadata:
   labels:
     app: order-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: order-service
@@ -31,13 +31,3 @@ spec:
               value: http://configuration-service
             - name: SPRING_DATASOURCE_URL
               value: r2dbc:postgresql://postgres/polar_orders
-            - name: SPRING_PROFILES_ACTIVE
-              value: test-data
-            - name: SPRING_RABBITMQ_HOST
-              value: polar-rabbitmq
-            - name: SPRING_RABBITMQ_PORT
-              value: "5672"
-            - name: SPRING_RABBITMQ_USERNAME
-              value: username
-            - name: SPRING_RABBITMQ_PASSWORD
-              value: password

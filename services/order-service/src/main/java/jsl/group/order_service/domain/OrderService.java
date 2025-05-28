@@ -44,10 +44,12 @@ public class OrderService {
                 .map(book -> buildAcceptedOrder(book, quantity))
                 .defaultIfEmpty(buildRejectedOrder(bookIsbn, quantity))
                 .flatMap(orderRepository::save)
-                .doOnNext(this::publishOrderAcceptedEvent)
-                .map(order -> new ResponseMessage<>(
-                        orderConfigurationProperties.getVersion(), HttpStatus.CREATED.value(), HttpMethod.POST.name(), null, LocalDateTime.now(), order, false
-                ));
+                .map(order -> {
+                    publishOrderAcceptedEvent(order);
+                    return new ResponseMessage<>(
+                            orderConfigurationProperties.getVersion(), HttpStatus.CREATED.value(), HttpMethod.POST.name(), null, LocalDateTime.now(), order, false
+                    );
+                });
     }
 
     public Flux<Order> consumerOrderDispatchedEvent(Flux<OrderDispatchedMessage> orderDispatchedMessageFlux) {
