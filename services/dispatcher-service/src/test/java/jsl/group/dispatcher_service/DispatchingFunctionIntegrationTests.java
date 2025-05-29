@@ -2,6 +2,7 @@ package jsl.group.dispatcher_service;
 
 import jsl.group.dispatcher_service.domain.OrderAcceptMessage;
 import jsl.group.dispatcher_service.domain.OrderDispatchMessage;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.function.context.FunctionCatalog;
@@ -12,11 +13,12 @@ import reactor.test.StepVerifier;
 import java.util.function.Function;
 
 @FunctionalSpringBootTest(properties = {"spring.cloud.config.enabled=false"})
+@Disabled("Appropriate when using the functions alone and no bindings")
 public class DispatchingFunctionIntegrationTests {
     @Autowired
     private FunctionCatalog functionCatalog;
 
-//    @Test
+    @Test
     public void orderPackedAndLabeled() {
         Function<OrderAcceptMessage, Flux<OrderDispatchMessage>> packComposeLabel = functionCatalog.lookup(Function.class, "pack|label");
         long orderId =121;

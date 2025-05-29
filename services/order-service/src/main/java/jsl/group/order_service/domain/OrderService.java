@@ -76,7 +76,7 @@ public class OrderService {
         if (!order.status().equals(OrderStatus.ACCEPTED)) return;
         OrderAcceptedMessage orderAcceptedMessage = new OrderAcceptedMessage(order.id());
         log.info("Sending order accepted event with id: {}", order.id());
-        var result = streamBridge.send("accepted-out-0", orderAcceptedMessage);
+        var result = streamBridge.send("acceptedOrder-out-0", orderAcceptedMessage);
         log.info("Result of sending data fro order with id {}: {}", order.id(), result);
     }
 }
