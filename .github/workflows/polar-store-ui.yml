@@ -27,11 +27,11 @@ jobs:
       - name: Build Angular app
         run: npm run build -- --configuration production # Use your build command
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: polar-store-ui
-          path: dist/polar-store-ui # Make sure this matches your output directory
+#      - name: Upload build artifacts
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: polar-store-ui
+#          path: dist/polar-store-ui # Make sure this matches your output directory
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/master' }}
