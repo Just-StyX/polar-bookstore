@@ -36,13 +36,22 @@ spec:
             limits:
               cpu: 200m
               memory: 150Mi
-#          volumeMounts:
-#            - mountPath: /etc/rabbitmq
-#              name: rabbitmq-config-volume
-#      volumes:
-#        - name: rabbitmq-config-volume
-#          configMap:
-#            name: rabbitmq-config
+          volumeMounts:
+            - mountPath: /etc/rabbitmq
+              name: rabbitmq-config-volume
+      volumes:
+        - name: rabbitmq-config-volume
+          configMap:
+            name: rabbitmq-config
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-config-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 50Mi
 
 ---
 apiVersion: v1

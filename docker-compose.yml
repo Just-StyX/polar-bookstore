@@ -23,6 +23,7 @@ services:
       - ORDER_SERVICE_URL=http://order-service:9002
       - SPRING_REDIS_HOST=edge-redis
       - SPRING_REDIS_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://polar-keycloak:8080/realms/PolarBookshop
     ports:
       - "8000:8000"
       - "9000:9000"
@@ -114,6 +115,25 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - agenda
+
+  polar-keycloak:
+    container_name: polar-keycloak
+    image: polar-keycloak
+    build:
+      context: keycloak
+      dockerfile: Dockerfile
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=username
+      - KEYCLOAK_ADMIN_PASSWORD=password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
     networks:
       - agenda
 
