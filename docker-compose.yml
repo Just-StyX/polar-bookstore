@@ -21,6 +21,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configuration-service:8888
       - CATALOG_SERVICE_URL=http://catalog-service:9001
       - ORDER_SERVICE_URL=http://order-service:9002
+      - SPA_URL=http://polar-store-ui:4200
       - SPRING_REDIS_HOST=edge-redis
       - SPRING_REDIS_PASSWORD=password
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://polar-keycloak:8080/realms/PolarBookshop
@@ -134,6 +135,18 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - agenda
+
+  polar-store-ui:
+    container_name: polar-store-ui
+    image: polar-store-ui
+    build:
+      context: store-ui/polar-store-ui
+      dockerfile: Dockerfile
+    mem_limit: 1024m
+    ports:
+      - "4200:4200"
     networks:
       - agenda
 

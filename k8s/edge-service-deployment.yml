@@ -32,7 +32,7 @@ spec:
             - name: ORDER_SERVICE_URL
               value: http://order-service
             - name: SPA_URL
-              value: http://polar-ui
+              value: http://polar-store-ui
             - name: SPRING_REDIS_HOST
               value: edge-redis
             - name: SPRING_REDIS_PASSWORD

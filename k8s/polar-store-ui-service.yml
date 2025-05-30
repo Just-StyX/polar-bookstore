@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-store-ui
+  labels:
+    app: polar-store-ui
+spec:
+  type: ClusterIP
+  selector:
+    app: polar-store-ui
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4200

@@ -1,0 +1,8 @@
+# Build
+docker_build('dist/polar-store-ui', './', dockerfile='./Dockerfile', deps=['package.json', 'angular.json', 'tsconfig.json', 'src/'])
+
+# Deploy
+k8s_yaml(['../../k8s/polar-store-ui-deployment.yml', '../../k8s/polar-store-ui-service.yml'])
+
+# Manage
+k8s_resource('dist/polar-store-ui')

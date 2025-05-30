@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-keycloak
+  labels:
+    app: polar-keycloak
+spec:
+  selector:
+    matchLabels:
+      app: polar-keycloak
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: polar-keycloak
+    spec:
+      terminationGracePeriodSeconds: 30
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: polar-keycloak
+          image: quay.io/keycloak/keycloak:26.1.4
+          imagePullPolicy: IfNotPresent
+          args: ["start-dev", "--import-realm"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+              value: "true"
+            - name: KC_HTTP_RELATIVE_PATH
+              value: "/"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+            - name: KC_PROXY_HEADERS
+              value: forwarded
+            - name: KC_PROXY_ADDRESS_FORWARDING
+              value: "true"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://postgres/polar_keycloak"
+            - name: KC_DB_USERNAME
+              value: "username"
+            - name: KC_DB_PASSWORD
+              value: "password"
+            - name: KEYCLOAK_USERNAME
+              value: "username"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "password"
+          volumeMounts:
+            - name: keycloak-realm-export
+              mountPath: /opt/keycloak/data/import/
+      volumes:
+        - name: keycloak-realm-export
+          secret:
+            secretName: keycloak-realm-export
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-keycloak
+  labels:
+    app: polar-keycloak
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+  selector:
+    app: polar-keycloak
