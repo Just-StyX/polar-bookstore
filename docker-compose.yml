@@ -140,11 +140,7 @@ services:
 
   polar-store-ui:
     container_name: polar-store-ui
-    image: polar-store-ui
-    build:
-      context: store-ui/polar-store-ui
-      dockerfile: Dockerfile
-    mem_limit: 1024m
+    image: ghcr.io/just-styx/polar-store-ui
     ports:
       - "4200:4200"
     networks:
