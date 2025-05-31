@@ -60,8 +60,8 @@ jobs:
       - name: Package SPA
         run: |
           pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
-            --buildpack gcr.io/paketo-buildpacks/nginx \
-            --builder paketobuildpacks/builder:base \
+            --buildpack docker.io/paketobuildpacks/nginx \
+            --builder paketobuildpacks/builder-jammy-buildpackless-base \
             -p store-ui/polar-store-ui/dist
       - name: OCI image vulnerability scanning
         uses: anchore/scan-action@v3
@@ -71,7 +71,7 @@ jobs:
           fail-build: false
           severity-cutoff: high
       - name: Upload vulnerability report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
