@@ -62,7 +62,7 @@ jobs:
           pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
             --buildpack gcr.io/paketo-buildpacks/nginx \
             --builder paketobuildpacks/builder:base \
-            -p dist
+            -p store-ui/polar-store-ui/dist
       - name: OCI image vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
