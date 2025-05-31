@@ -10,7 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
-@SpringBootTest(properties = {"spring.cloud.config.enabled=false"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {"spring.cloud.config.enabled=false"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {EdgeServiceSecurityTests.class})
 class EdgeServiceApplicationTests {
 
 	private static final int REDIS_PORT = 6379;
