@@ -1,5 +1,5 @@
 # Build
-docker_build('polar-store-ui', './', dockerfile='./Dockerfile')
+# docker_build('polar-store-ui', './', dockerfile='./Dockerfile')
 
 # Deploy
 k8s_yaml(['../../k8s/polar-store-ui-deployment.yml', '../../k8s/polar-store-ui-service.yml'])

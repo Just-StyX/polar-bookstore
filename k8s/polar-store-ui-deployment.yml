@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: polar-store-ui
-          image: polar-store-ui
+          image: ghcr.io/polarbookshop/polar-ui
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -24,3 +24,6 @@ spec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: 4200
+          env:
+            - name: PORT
+              value: "4200"

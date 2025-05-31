@@ -140,7 +140,9 @@ services:
 
   polar-store-ui:
     container_name: polar-store-ui
-    image: ghcr.io/just-styx/polar-store-ui
+    image: "ghcr.io/polarbookshop/polar-ui"
+    environment:
+      - PORT=4200
     ports:
       - "4200:4200"
     networks:
