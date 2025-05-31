@@ -52,10 +52,12 @@ spec:
               value: "username"
             - name: KC_DB_PASSWORD
               value: "password"
-            - name: KEYCLOAK_USERNAME
+            - name: KEYCLOAK_ADMIN
               value: "username"
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: "password"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: "http://polar-keycloak"
           volumeMounts:
             - name: keycloak-realm-export
               mountPath: /opt/keycloak/data/import/
@@ -74,8 +76,29 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8080
+    - port: 80
       targetPort: 8080
       name: http
   selector:
     app: polar-keycloak
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  labels:
+    app: polar-keycloak
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: polar-keycloak
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: polar-keycloak
+                port:
+                  number: 80

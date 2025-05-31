@@ -1,0 +1,48 @@
+plugins {
+  id("com.github.node-gradle.node") version "7.1.0"
+}
+
+node {
+  download = true
+  version = "23.11.0"
+}
+
+tasks.register('lintAngular', NpxTask) {
+  command = "ng"
+  args = ["lint"]
+  dependsOn(tasks.npmInstall)
+  inputs.dir("src")
+  inputs.dir("node_modules")
+  inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.app.json", "tsconfig.spec.json",
+    "tslint.json")
+  outputs.upToDateWhen { true }
+}
+
+tasks.register('testAngular', NpxTask) {
+  command = "ng"
+  args = ["test"]
+  dependsOn(tasks.npmInstall)
+  inputs.dir("src")
+  inputs.dir("node_modules")
+  inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.spec.json", "karma.conf.js")
+  outputs.upToDateWhen { true }
+}
+
+tasks.register('buildAngular', NpxTask) {
+  command = "ng"
+  args = ["build"]
+  dependsOn(tasks.npmInstall)
+  inputs.dir(project.fileTree("src").exclude("**/*.spec.ts"))
+  inputs.dir("node_modules")
+  inputs.files("angular.json", ".browserslistrc", "tsconfig.json", "tsconfig.app.json")
+  finalizedBy "nginxConfig"
+}
+
+tasks.register('nginxConfig', Copy) {
+  from "nginx"
+  into "dist"
+}
+
+tasks.register('clean', Delete) {
+  delete "dist"
+}
