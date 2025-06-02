@@ -9,9 +9,13 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.web.server.WebFilter;
+import reactor.core.publisher.Mono;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -30,7 +34,19 @@ public class EdgeServiceSecurityConfig {
         httpSecurity.logout(logoutSpec -> logoutSpec.logoutSuccessHandler(
                 serverLogoutSuccessHandler(clientRegistrationRepository)
         ));
+        httpSecurity.csrf(csrfSpec -> csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()));
         return httpSecurity.build();
+    }
+
+    @Bean
+    WebFilter csrfWebFilter() {
+        return (exchange, chain) -> {
+            exchange.getResponse().beforeCommit(() -> Mono.defer(() -> {
+                Mono<CsrfToken> csrfTokenMono = exchange.getAttribute(CsrfToken.class.getName());
+                return csrfTokenMono != null ? csrfTokenMono.then() : Mono.empty();
+            }));
+            return chain.filter(exchange);
+        };
     }
 
     private ServerLogoutSuccessHandler serverLogoutSuccessHandler(ReactiveClientRegistrationRepository clientRegistrationRepository) {

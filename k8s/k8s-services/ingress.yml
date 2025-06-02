@@ -16,3 +16,10 @@ spec:
                 name: edge-service
                 port:
                   number: 80
+          - path: /login/oauth2/code/keycloak
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: edge-service
+                port:
+                  number: 80
