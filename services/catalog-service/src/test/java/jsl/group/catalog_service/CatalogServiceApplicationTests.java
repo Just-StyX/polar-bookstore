@@ -21,20 +21,22 @@ class CatalogServiceApplicationTests {
 	void contextLoads() {
 	}
 
+	// TODO: JwtDecoder tests passed because configuration service is up. Write a test when it is down
+
 	@Test
-	void postRequestToCreateBook() {
+	void postRequestToCreateBookWhenUnauthenticated() {
 		Book book = Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90), "Springer");
 		webTestClient.post()
 				.uri("/books")
 				.bodyValue(book)
 				.exchange()
-				.expectStatus().isCreated()
-				.expectBody(ResponseMessage.class).value(actual -> {
-					assertThat(actual.body()).isNotNull();
-					assertThat(actual.exception()).isFalse();
-					assertThat(actual.url()).isNotNull();
-					assertThat(actual.version()).isEqualTo("api-v1");
-				});
+				.expectStatus().isUnauthorized();
+//				.expectBody(ResponseMessage.class).value(actual -> {
+//					assertThat(actual.body()).isNotNull();
+//					assertThat(actual.exception()).isFalse();
+//					assertThat(actual.url()).isNotNull();
+//					assertThat(actual.version()).isEqualTo("api-v1");
+//				});
 	}
 
 }

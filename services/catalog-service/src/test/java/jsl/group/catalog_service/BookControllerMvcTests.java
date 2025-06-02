@@ -24,9 +24,9 @@ public class BookControllerMvcTests {
     private BookService bookService;
 
     @Test
-    void whenGetNotExistShouldReturn404() throws Exception {
+    void whenGetNotExistAndUnauthenticatedShouldReturn404() throws Exception {
         String isbn = "12345678";
         given(bookService.vewBookDetails(isbn)).willThrow(BookNotFoundException.class);
-        mockMvc.perform(get("/books/" + isbn)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/books/" + isbn)).andExpect(status().isUnauthorized());
     }
 }
