@@ -7,6 +7,8 @@ import jsl.group.order_service.domain.Order;
 import jsl.group.order_service.domain.OrderService;
 import jsl.group.order_service.domain.ResponseMessage;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -29,6 +31,11 @@ public class OrderController {
         String location = uriComponentsBuilder.path("/orders").buildAndExpand().toUri().toString();
         return orderService.getAllOrders()
                 .map(orderResponseMessage -> ResponseMessage.of(orderResponseMessage, location));
+    }
+
+    @GetMapping(value = "own", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseMessage<List<Order>>> getAllOrdersByUser(@AuthenticationPrincipal Jwt jwt) {
+        return orderService.getAllOrdersByUser(jwt.getSubject());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

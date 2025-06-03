@@ -1,9 +1,6 @@
 package jsl.group.order_service.domain;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
@@ -24,9 +21,13 @@ public record Order(
         @CreatedDate
         Instant createdDate,
         @LastModifiedDate
-        Instant lastModifiedDate
+        Instant lastModifiedDate,
+        @CreatedBy
+        String createdBy,
+        @LastModifiedBy
+        String lastModifiedBy
 ) {
     public static Order of(String bookIsbn, String bookName, BigDecimal bookPrice, Integer quantity, OrderStatus status) {
-        return new Order(null, 0, bookIsbn, bookName, bookPrice, quantity, status, null, null);
+        return new Order(null, 0, bookIsbn, bookName, bookPrice, quantity, status, null, null, null, null);
     }
 }

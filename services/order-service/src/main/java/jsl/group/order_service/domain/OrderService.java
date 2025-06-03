@@ -38,6 +38,11 @@ public class OrderService {
                 orderConfigurationProperties.getVersion(), HttpStatus.OK.value(), HttpMethod.GET.name(), null, LocalDateTime.now(), orderList, false
         ));
     }
+    public Mono<ResponseMessage<List<Order>>> getAllOrdersByUser(String userId) {
+        return orderRepository.findAllByCreatedBy(userId).collectList().map(orders -> new ResponseMessage<>(
+                orderConfigurationProperties.getVersion(), HttpStatus.OK.value(), HttpMethod.GET.name(), null, LocalDateTime.now(), orders, false
+        ));
+    }
     @Transactional
     public Mono<ResponseMessage<Order>> submitOrder(String bookIsbn, int quantity) {
         return bookClient.getBookByIsbn(bookIsbn)
@@ -68,7 +73,8 @@ public class OrderService {
 
     private Order buildDispatchedOrder(Order order) {
         return new Order(
-                order.id(), order.version(), order.bookIsbn(), order.bookName(), order.bookPrice(), order.quantity(), order.status(), order.createdDate(), order.lastModifiedDate()
+                order.id(), order.version(), order.bookIsbn(), order.bookName(), order.bookPrice(), order.quantity(), order.status(), order.createdDate(), order.lastModifiedDate(),
+                order.createdBy(), order.lastModifiedBy()
         );
     }
 

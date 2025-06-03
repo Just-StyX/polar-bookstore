@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -35,5 +36,14 @@ public class BookRepositoryJdbcTests {
 
         assertThat(actualBook).isPresent();
         assertThat(actualBook.get().isbn()).isEqualTo(book.isbn());
+    }
+
+    @Test
+    @WithMockUser("jsl")
+    void authenticatedAndAuditData() {
+        Book book = Book.of("ISBN-10 0-596-52068-9", "Title", "Author", BigDecimal.valueOf(9.90), "Springer");
+        Book createdBook = bookRepository.save(book);
+        assertThat(createdBook.createdBy()).isEqualTo("jsl");
+        assertThat(createdBook.lastModifiedBy()).isEqualTo("jsl");
     }
 }
