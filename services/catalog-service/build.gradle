@@ -31,6 +31,7 @@ configurations {
 ext {
 	set('springCloudVersion', "2024.0.1")
 	set('testKeycloakVersion', "3.7.0")
+	set('otelVersion', "2.16.0")
 }
 
 bootRun {
@@ -73,6 +74,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation "com.github.dasniko:testcontainers-keycloak:${testKeycloakVersion}"
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
 }
 
 dependencyManagement {

@@ -16,7 +16,8 @@ public class CatalogSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(authz -> {
-            authz.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll();
+            authz.requestMatchers(HttpMethod.GET, "/", "/books/**", "/books").permitAll();
+            authz.requestMatchers("/actuator/**").permitAll();
             authz.anyRequest().hasRole("employee");
         });
         httpSecurity.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

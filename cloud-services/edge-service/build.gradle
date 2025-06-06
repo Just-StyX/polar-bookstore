@@ -53,6 +53,7 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'io.github.resilience4j:resilience4j-micrometer:2.3.0'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	testImplementation 'org.springframework.security:spring-security-test'

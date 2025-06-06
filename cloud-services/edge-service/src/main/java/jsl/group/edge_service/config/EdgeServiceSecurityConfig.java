@@ -26,7 +26,7 @@ public class EdgeServiceSecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity, ReactiveClientRegistrationRepository clientRegistrationRepository) {
         httpSecurity.authorizeExchange(authz -> {
             authz.pathMatchers("/", "/*.css", "/*.js", "/favicon.ico", "/login/**").permitAll();
-            authz.pathMatchers(HttpMethod.GET, "/books/**").permitAll();
+            authz.pathMatchers(HttpMethod.GET, "/books/**", "/books").permitAll();
             authz.anyExchange().authenticated();
         });
         httpSecurity.exceptionHandling(exceptionHandlingSpec -> {

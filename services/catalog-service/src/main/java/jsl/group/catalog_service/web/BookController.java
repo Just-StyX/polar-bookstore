@@ -35,6 +35,7 @@ public class BookController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage<Iterable<Book>> get(UriComponentsBuilder uriComponentsBuilder) {
         String location = uriComponentsBuilder.path("/books").buildAndExpand().toUri().toString();
+        log.info("Books url: {}", location);
         return new ResponseMessage<>(
                 polarConfigurationProperties.getVersion(), HttpStatus.OK.value(), HttpMethod.GET.name(), location, LocalDateTime.now(), bookService.viewBookList(), false
         );
